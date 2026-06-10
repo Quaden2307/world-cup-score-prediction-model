@@ -23,6 +23,17 @@ df["away_team_mean_conceded"] = df["away_team_name"].map(score_avg["conceded"])
 
 fx = pd.read_csv("data/archive/wc_2026_fixtures.csv")
 fx["team1_mean_goals"] = fx["team1"].map(score_avg["score"])
-fx["team1_mean_goals"] = fx["team2"].map(score_avg["score"])
+fx["team2_mean_goals"] = fx["team2"].map(score_avg["score"])
+
+fx = fx[fx["stage"].str.contains("Group") == True]
+bad = fx[(fx["team1_mean_goals"].isna()) | (fx["team2_mean_goals"].isna())]
+bad_team1 = fx[fx["team1_mean_goals"].isna()]["team1"].unique()
+bad_team2 = fx[fx["team2_mean_goals"].isna()]["team2"].unique()
+missing_teams = set(bad_team1) | set(bad_team2)
+
 
 print(fx.isna().sum())
+print()
+print(len(bad), "of", len(fx), "fixtures involve a team with no history")
+print(len(missing_teams), "distinct missing teams:")
+print(sorted(missing_teams))
