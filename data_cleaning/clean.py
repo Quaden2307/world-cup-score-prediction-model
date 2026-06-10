@@ -20,4 +20,9 @@ df["away_team_mean_goals"] = df["away_team_name"].map(score_avg["score"])
 df["home_team_mean_conceded"] = df["home_team_name"].map(score_avg["conceded"])
 df["away_team_mean_conceded"] = df["away_team_name"].map(score_avg["conceded"])
 
-print(df.isna().sum())
+
+fx = pd.read_csv("data/archive/wc_2026_fixtures.csv")
+fx["team1_mean_goals"] = fx["team1"].map(score_avg["score"])
+fx["team1_mean_goals"] = fx["team2"].map(score_avg["score"])
+
+print(fx.isna().sum())
