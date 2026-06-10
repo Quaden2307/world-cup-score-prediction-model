@@ -7,10 +7,17 @@ df["is_knockout_stage"] = df["knockout_stage"] == 1
 df = df[["home_team_name", "away_team_name", "match_date", "home_team_score", 
          "away_team_score", "total_goals", "is_knockout_stage"]]
 
+
 home_df = pd.DataFrame({"country": df["home_team_name"], "score": df["home_team_score"], "conceded": df["away_team_score"]})
 away_df = pd.DataFrame({"country": df["away_team_name"], "score": df["away_team_score"], "conceded": df["home_team_score"]})
 
 score_avg = pd.concat([away_df, home_df])
 score_avg = score_avg.groupby("country")[["score", "conceded"]].mean()
 
-print(score_avg.loc["Spain"])
+df["home_team_mean_goals"] = df["home_team_name"].map(score_avg["score"])
+df["away_team_mean_goals"] = df["away_team_name"].map(score_avg["score"])
+
+df["home_team_mean_conceded"] = df["home_team_name"].map(score_avg["conceded"])
+df["away_team_mean_conceded"] = df["away_team_name"].map(score_avg["conceded"])
+
+print(df.isna().sum())
