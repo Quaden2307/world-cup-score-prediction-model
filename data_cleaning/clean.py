@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 
 df = pd.read_csv("data/matches.csv")
@@ -58,3 +59,9 @@ print(len(bad), "of", len(fx), "fixtures involved a team with no history, filled
 print("NaNs left in feature columns:")
 print(fx[["team1_mean_goals_scored", "team2_mean_goals_scored",
           "team1_mean_goals_conceded", "team2_mean_goals_conceded"]].isna().sum())
+
+#hand off the clean tables to the model stage (index=False: no phantom index column)
+os.makedirs("data/processed", exist_ok=True)
+df.to_csv("data/processed/train.csv", index=False)
+fx.to_csv("data/processed/fixtures_2026.csv", index=False)
+print("saved", len(df), "training rows and", len(fx), "fixture rows to data/processed/")
