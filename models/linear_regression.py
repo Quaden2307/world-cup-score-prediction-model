@@ -50,6 +50,16 @@ test = map_score_avg(test, score_avg)
 
 feature_cols = ["home_team_mean_goals", "away_team_mean_goals",
                 "home_team_mean_conceded", "away_team_mean_conceded"]
-for name, frame in [("train", train), ("val", val), ("test", test)]:
-    print(name, "rows:", len(frame), " feature NaNs:", int(frame[feature_cols].isna().sum().sum()))
 
+#for name, frame in [("train", train), ("val", val), ("test", test)]:
+#    print(name, "rows:", len(frame), " feature NaNs:", int(frame[feature_cols].isna().sum().sum()))
+
+
+#numpy conversion
+X = train[feature_cols].values
+y = train["total_goals"].values
+
+print(train[feature_cols].head(10))
+
+print(f"Shape of features: {X.shape}")
+print(f"Shape of target: {y.shape}")
