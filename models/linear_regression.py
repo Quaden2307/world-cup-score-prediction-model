@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 
 
@@ -59,7 +60,38 @@ feature_cols = ["home_team_mean_goals", "away_team_mean_goals",
 X = train[feature_cols].values
 y = train["total_goals"].values
 
-print(train[feature_cols].head(10))
-
 print(f"Shape of features: {X.shape}")
 print(f"Shape of target: {y.shape}")
+
+w = np.zeros(4)
+b = y.mean()
+lr = 0.00001
+
+for i in tqdm(range(1000000)):
+    pred = X @ w + b
+    difference = pred - y
+    change = X.T @ difference
+    w -= change * lr
+
+def linear_regression(w, X):
+    return X @ w + b
+
+
+
+#Comparison against train set
+train_loss = ((y - linear_regression(w, X))**2).mean()
+train_baseline = ((y - y.mean())**2).mean()
+
+print(f"Training Error Score: {train_loss}")
+print(f"Training Baseline Error Score: {train_baseline}")
+
+
+#Comparison against val set
+val_rows = val[feature_cols].values
+
+val_loss = ((val["total_goals"].values - linear_regression(w, val_rows))**2).mean()
+val_baseline  = ((val["total_goals"].values - val["total_goals"].values.mean())**2).mean()
+
+print(f"Validation Error Score: {val_loss}")
+print(f"Validation Baseline Error Score: {val_baseline}")
+
