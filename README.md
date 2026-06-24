@@ -1,7 +1,7 @@
 # World Cup Match Goal Predictor
 
 A small machine learning project I built for fun while the 2026 World Cup was
-getting underway. I wanted hands-on practice taking a model from raw data all the
+getting underway. LETS GOOOOOOO CANADA!!! 🇨🇦 🍁  I wanted hands-on practice taking a model from raw data all the
 way to predictions, including writing the algorithm myself instead of just calling
 a library.
 
