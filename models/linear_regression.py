@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+from sklearn.linear_model import LinearRegression
 
 
 
@@ -87,11 +88,30 @@ print(f"Training Baseline Error Score: {train_baseline}")
 
 
 #Comparison against val set
-val_rows = val[feature_cols].values
+val_X = val[feature_cols].values
+val_y = val["total_goals"].values
 
-val_loss = ((val["total_goals"].values - linear_regression(w, val_rows))**2).mean()
-val_baseline  = ((val["total_goals"].values - val["total_goals"].values.mean())**2).mean()
+val_loss = ((val_y - linear_regression(w, val_X))**2).mean()
+val_baseline  = ((val_y - val["total_goals"].values.mean())**2).mean()
 
 print(f"Validation Error Score: {val_loss}")
 print(f"Validation Baseline Error Score: {val_baseline}")
+
+#---------------------------------------------SCIKIT-LEARN---------------------------------------------#
+
+#Reuses previously defined X and y vectors 
+model = LinearRegression()
+model.fit(X, y)
+
+sk_preds = model.predict(X)
+sk_loss = ((y - sk_preds)**2).mean() # -> Train's Baseline Mean Loss
+
+#Same can be done for val
+sk_val_pred = model.predict(val_X)
+sk_val_loss = ((val_y - sk_val_pred)**2).mean()
+
+print(f"Scikit-Learn Training Error Score: {sk_loss}")
+print(f"Scikit-Learn Validation Error Score: {sk_val_loss}")
+
+
 
